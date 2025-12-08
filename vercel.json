@@ -1,0 +1,101 @@
+import type { BuildCommand, EnvironmentVariables, HeaderRule, SecurityHeaders } from './types';
+
+interface DeployConfig {
+  build: BuildCommand;
+  env: EnvironmentVariables;
+  redirects?: Array<{source: string; destination: string; statusCode: number}>;
+  headers: Array<HeaderRule>;
+  cache?: Record<string, any>;
+  frameworkSettings?: { [key: string]: any };
+}
+
+export const deployConfig: DeployConfig = {
+  build: {
+    command: 'next build',
+    output: '.vercel/output'
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_STRIPE_KEY: process.env.NEXT_PUBLIC_STRIPE_KEY
+  },
+  redirects: [
+    { source: '/old-url', destination: '/new-url', statusCode: 301 }
+  ],
+  headers: [
+    {
+      source: '/',
+      headers: [
+        { key: 'strict-transport-security', value: 'max-age=63072000; includeSubDomains; preload' },
+        { key: 'x-content-type-options', value: 'nosniff' },
+        { key: 'x-frame-options', value: 'DENY' },
+        { key: 'x-xss-protection', value: '1; mode=block' }
+      ]
+    }
+  ],
+  cache: {
+    pages: '/api/**',
+    files: '/static/**'
+  },
+  frameworkSettings: {
+    vercel: {
+      buildCommand: 'next build',
+      outDir: '.vercel/output',
+      env: { NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL }
+    },
+    netlify: {
+      build: { command: 'yarn run build' },
+      functions: './functions'
+    }
+  }
+};
+
+import type { BuildCommand, EnvironmentVariables, HeaderRule, SecurityHeaders } from './types';
+
+interface DeployConfig {
+  build: BuildCommand;
+  env: EnvironmentVariables;
+  redirects?: Array<{source: string; destination: string; statusCode: number}>;
+  headers: Array<HeaderRule>;
+  cache?: Record<string, any>;
+  frameworkSettings?: { [key: string]: any };
+}
+
+export const deployConfig: DeployConfig = {
+  build: {
+    command: 'next build',
+    output: '.vercel/output'
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_STRIPE_KEY: process.env.NEXT_PUBLIC_STRIPE_KEY
+  },
+  redirects: [
+    { source: '/old-url', destination: '/new-url', statusCode: 301 }
+  ],
+  headers: [
+    {
+      source: '/',
+      headers: [
+        { key: 'strict-transport-security', value: 'max-age=63072000; includeSubDomains; preload' },
+        { key: 'x-content-type-options', value: 'nosniff' },
+        { key: 'x-frame-options', value: 'DENY' },
+        { key: 'x-xss-protection', value: '1; mode=block' }
+      ]
+    }
+  ],
+  cache: {
+    pages: '/api/**',
+    files: '/static/**'
+  },
+  frameworkSettings: {
+    vercel: {
+      buildCommand: 'next build',
+      outDir: '.vercel/output',
+      env: { NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL }
+    },
+    netlify: {
+      build: { command: 'yarn run build' },
+      functions: './functions'
+    }
+  }
+};
